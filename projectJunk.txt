@@ -1,0 +1,45 @@
+async function handleSignInWithGoogle() {
+    const user = await AsyncStorage.getItem("@user");
+
+    try {
+      if (user) {
+        if (response?.type === "success") {
+          toast("google sign in successfull", "success");
+          await getUserInfo(response.authentication?.accessToken);
+        }
+      } else {
+        // for testing
+
+        const test = {
+          email: "disonobudho23@gmail.com",
+          name: "dison",
+        };
+        AsyncStorage.setItem("@user", JSON.stringify(test));
+
+        dispatch(setUserFromAsyncStorage({ user: test }));
+        toast("You already signed in", "success");
+        dispatch(processingAuth({ authLoading: false }));
+        return <Redirect href="/user/menu" />;
+      }
+    } catch (error) {
+     
+      toast(JSON.stringify(error), "error");
+    }
+  }
+
+  async function getUserInfo(token: string | undefined) {
+    try {
+      const res = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const user = await res.json();
+      await AsyncStorage.setItem("@user", JSON.stringify(user));
+      setUserFromAsyncStorage({ user });
+      dispatch(processingAuth({ authLoading: false }));
+      return <Redirect href="/user/menu" />;
+    } catch (error) {
+    } finally {
+      dispatch(processingAuth({ authLoading: false }));
+    }
+  }

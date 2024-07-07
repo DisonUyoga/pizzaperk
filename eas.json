@@ -1,0 +1,36 @@
+{
+  "cli": {
+    "version": ">= 10.0.3"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://opntentcsoganyijdqrd.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wbnRlbnRjc29nYW55aWpkcXJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgxMjM0NjYsImV4cCI6MjAzMzY5OTQ2Nn0.h2N_WmjXhxYrdRaDzb1UlStUWbNp3NnFL3_A2FVdV7M",
+        "EXPO_PUBLIC_PROJECTID": "63efc380-98b3-4706-89d9-ae26b040eb3c",
+        "EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY": "pk_test_51NSwr0JPAJGC0l3DBoyNsfXu1fquC20Pg8yB3BzI2FBGCULxzsTNJjTlkylR0qjaBgNTto6CF6b31A31qc3q2nWL006Iu0l9zT",
+        "STRIPE_SECRET_KEY": "sk_test_51NSwr0JPAJGC0l3Dp59zsCplzQOTn0SQgTXueeZ1B1IJQHGfWX6vcbQ8S0lJJ32fOWd1tmIe0DCZz30LJwaaY08D00ZXxAA8Ge",
+        "EXPO_PUBLIC_ALGOLIA_APP_ID": "NP2UESVIFR",
+        "EXPO_PUBLIC_ALGOLIA_API_KEY": "4c83c5638466aa7dc80a00a9995b9a7c",
+        "EXPO_PUBLIC_CLIENT_ID_ANDROID": "770104594117-maf3gf4dkkna1a6d6frfm1qe0efie52a.apps.googleusercontent.com",
+        "EXPO_PUBLIC_CLIENT_ID_IOS": "770104594117-thogifm5naue7dejras9ompp1r7ia252.apps.googleusercontent.com"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
