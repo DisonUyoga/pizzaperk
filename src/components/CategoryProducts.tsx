@@ -4,20 +4,17 @@ import { Tables } from "../database.types";
 import * as Animatable from "react-native-animatable";
 import { FontAwesome } from "@expo/vector-icons";
 import ProductCard from "./ProductCard";
+import { toggleCategoryModal } from "../app/features/slices/productSlice";
+import { useAppDispatch, useAppSelector } from "../utils/hooks";
 
 interface CategoryProps {
-  toggleCategoryModal: () => void;
-  categoryModalVisible: boolean;
   products: Tables<"products">[];
   categories: Tables<"categories">[];
 }
-const CategoryProducts = ({
-  toggleCategoryModal,
-  categoryModalVisible,
-  products,
-  categories,
-}: CategoryProps) => {
+const CategoryProducts = ({ products, categories }: CategoryProps) => {
   const [category, setCategory] = useState<Tables<"categories"> | undefined>();
+  const dispatch = useAppDispatch();
+  const { categoryModalVisible } = useAppSelector((state) => state.product);
 
   useEffect(() => {
     filterCategoryItem();
@@ -26,6 +23,11 @@ const CategoryProducts = ({
     const categoryId = products[0].category_id;
     const categoryItem = categories.find((c) => c.id === categoryId);
     setCategory(categoryItem);
+  }
+  function toggleModal() {
+    dispatch(
+      toggleCategoryModal({ categoryModalVisible: !categoryModalVisible })
+    );
   }
   return (
     <Modal
@@ -42,7 +44,9 @@ const CategoryProducts = ({
           <FlatList
             data={products}
             keyExtractor={(item: any) => item.id}
-            renderItem={({ item }) => <ProductCard product={item} />}
+            renderItem={({ item }) => (
+              <ProductCard product={item} toggleModal={toggleModal} />
+            )}
             contentContainerStyle={{ gap: 10 }}
             ListHeaderComponent={() => (
               <View className="w-full">
@@ -55,7 +59,13 @@ const CategoryProducts = ({
         </View>
         <Pressable
           className="absolute bg-secondary-100 rounded-full p-2 items-center justify-center top-2 left-2"
-          onPress={toggleCategoryModal}
+          onPress={() =>
+            dispatch(
+              toggleCategoryModal({
+                categoryModalVisible: !categoryModalVisible,
+              })
+            )
+          }
         >
           <FontAwesome name="times" size={20} />
         </Pressable>

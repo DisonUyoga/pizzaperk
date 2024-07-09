@@ -4,6 +4,7 @@ import FormElement from "@/src/components/FormElement";
 import Loading from "@/src/components/Loading";
 import OrderPlaceholderSkeleton from "@/src/components/OrderPlaceholderSkeleton";
 import SelectDropDown from "@/src/components/SelectDropDown";
+import Skeleton from "@/src/components/Skeleton";
 import UpLoading from "@/src/components/Uploading";
 import ValidationError from "@/src/components/ValidationError";
 import { Tables } from "@/src/database.types";
@@ -43,7 +44,7 @@ const Create = () => {
   const [image, setImage] = useState<string | null>(null);
   const [file, setFile] = useState<ImagePicker.ImagePickerAsset>();
   const { id } = useLocalSearchParams();
-  const { globalErrors } = useAppSelector((state) => state.error);
+  const { globalErrors } = useAppSelector((state) => state.product);
   const [error, setError] = useState<any>([...globalErrors]);
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -51,6 +52,8 @@ const Create = () => {
   const { mutate: createProduct, isPending } = useCreateProduct();
   const { mutate: updateProduct, isPending: updateIsPending } =
     useUpdateProduct();
+  const { create } = useLocalSearchParams();
+  const [whenCreatingLoader, setWhenCreatingLoader] = useState(create);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("pizza");
   const [categoryId, setCategoryId] = useState<number | undefined>();
@@ -71,6 +74,7 @@ const Create = () => {
       setName(updatingProduct.name);
       setPrice(updatingProduct.price);
       setImage(updatingProduct.image);
+      setDiscount(updatingProduct.discount);
       setCategoryId(updatingProduct.category_id as number);
       const filteredCategory = categories?.find(
         (c) => c.id === updatingProduct.category_id
@@ -95,8 +99,11 @@ const Create = () => {
       </View>
     );
   }
-  if (isLoading) {
+  if (isLoading && whenCreatingLoader === "true") {
     return <Loading />;
+  }
+  if (isLoading) {
+    return <Skeleton />;
   }
 
   const openPicker = async () => {
@@ -118,6 +125,7 @@ const Create = () => {
   };
 
   const confirmCategory = () => {
+    setWhenCreatingLoader("");
     Alert.alert(
       "Confirm",
       `Your item is going to be saved under ${selectedCategory} category`,
@@ -312,15 +320,15 @@ const Create = () => {
             handleChange={(e) => setDescription(e)}
           />
           <FormElement
-            label="Price*"
+            label="New Price*"
             placeholder="price..."
             value={isUpdating ? price?.toString() : price}
             handleChange={(e) => setPrice(e as unknown as number)}
             keyboardType="numeric"
           />
           <FormElement
-            label="New Price"
-            placeholder="new price...(optional)"
+            label="Previous Price"
+            placeholder="previous price...(optional)"
             value={isUpdating ? discount?.toString() : discount}
             handleChange={(e) => setDiscount(e as unknown as number)}
             keyboardType="numeric"

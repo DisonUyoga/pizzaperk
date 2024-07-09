@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "pizzaperk",
-    "slug": "pizzaperk",
+    "name": "PizzaPerk",
+    "slug": "PizzaPerk",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/admin.png",
@@ -39,7 +39,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "63efc380-98b3-4706-89d9-ae26b040eb3c"
+        "projectId": "86ca84c4-8a05-40ba-b253-d5e9b48215f8"
       }
     }
   }

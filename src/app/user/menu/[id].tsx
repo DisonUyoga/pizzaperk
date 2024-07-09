@@ -8,7 +8,7 @@ import { useGetProduct } from "@/src/lib/query";
 import { useAppDispatch, useAppSelector } from "@/src/utils/hooks";
 import { Image } from "expo-image";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   StyleSheet,
@@ -25,6 +25,7 @@ import RemoteImage from "@/src/components/RemoteImage";
 import ProductDetailImage from "@/src/components/ProductDetailImage";
 import Skeleton from "@/src/components/Skeleton";
 import ProductDetailSkeletonPlaceholder from "@/src/components/ProductDetailSkeletonPlaceholder";
+import { toggleCategoryModal } from "../../features/slices/productSlice";
 
 const ProductDetail = () => {
   const { id, update } = useLocalSearchParams();
@@ -39,7 +40,8 @@ const ProductDetail = () => {
     sizes: selected,
   } = useAppSelector((state) => state.cart);
   const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const cartItem = cartItems.find((p) => p.id === product?.id);
+  const cartItem = cartItems.find((p) => p.id === product?.id) as any;
+  
 
   if (isLoading) {
     return <ProductDetailSkeletonPlaceholder />;
@@ -57,7 +59,7 @@ const ProductDetail = () => {
       router.push("/cart");
     }
   }
-
+  
   function addProductToCart(product: Tables<"products">) {
     if (!product) return;
     try {

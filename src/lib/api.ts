@@ -16,7 +16,7 @@ export async function getCategories() {
 export async function getProducts() {
   const { data, error } = await supabase
     .from("products")
-    .select("*")
+    .select("*, categories(*)")
     .order("created_at", { ascending: false });
   if (error) {
     throw new Error(error.message);

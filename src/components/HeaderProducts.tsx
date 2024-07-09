@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   FlatList,
   Image,
@@ -14,7 +14,8 @@ import { Tables } from "../database.types";
 import { colors } from "../global/styles";
 import products from "@/assets/data/products";
 import HeaderImage from "./HeaderImage";
-import { useAppSelector } from "../utils/hooks";
+import { useAppDispatch, useAppSelector } from "../utils/hooks";
+import { toggleCategoryModal } from "../app/features/slices/productSlice";
 interface ProductsOnOfferProps {
   categories: Tables<"categories">[];
   filterDataByCategory: (p: Tables<"products">[], id: number) => void;
@@ -24,7 +25,6 @@ interface ProductsOnOfferProps {
   toggleFinish: () => void;
   toggleCategory?: () => void;
   setCategoryId?: (id: number) => void;
-  toggleCategoryModal?: () => void;
 }
 
 const ProductsOnOffer = ({
@@ -36,11 +36,25 @@ const ProductsOnOffer = ({
   toggleFinish,
   toggleCategory,
   setCategoryId,
-  toggleCategoryModal,
 }: ProductsOnOfferProps) => {
   const [animateItemItem, setAnimateItem] = useState<any>();
   const [indexCheck, setIndexCheck] = useState(0);
   const { isAdmin } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const { categoryModalVisible } = useAppSelector((state) => state.product);
+
+  function checkIfCategoryHasProduct(
+    categories: Tables<"categories">,
+    products: Tables<"products">[]
+  ) {
+    const validateCategory = products.map((p) => {
+      if (p.categories.id === categories.id) {
+        return true;
+      }
+      return false;
+    });
+    return validateCategory;
+  }
 
   return (
     <View className="px-2 space-y-2">
@@ -70,54 +84,60 @@ const ProductsOnOffer = ({
         data={categories}
         keyExtractor={(item: any) => item.id}
         extraData={indexCheck}
-        renderItem={({ item, index }) => (
-          <Pressable
-            onPress={() => {
-              setIndexCheck(item.id);
+        renderItem={({ item, index }) => {
+          const c = checkIfCategoryHasProduct(item, filteredProducts);
 
-              if (isAdmin && toggleCategory && setCategoryId) {
-                toggleCategory();
-                setCategoryId(item.id);
-              }
-              if (!isAdmin && toggleCategoryModal) {
-                toggleCategoryModal();
-                filterDataByCategory(filteredProducts, item.id);
-              }
-            }}
-          >
-            <View
-              style={
-                indexCheck === item.id
-                  ? { ...styles.smallCardSelected }
-                  : { ...styles.smallCard }
-              }
-            >
-              {/* <Image
-                style={{ height: 60, width: 60, borderRadius: 30 }}
-                source={{ uri: item.image as any }}
-              /> */}
-              <HeaderImage
-                fallback={products[0].image}
-                path={item.image as string}
-              />
+          if (c.includes(true)) {
+            return (
+              <Pressable
+                onPress={() => {
+                  setIndexCheck(item.id);
 
-              <View>
-                <Text
+                  if (isAdmin && toggleCategory && setCategoryId) {
+                    toggleCategory();
+                    setCategoryId(item.id);
+                  }
+                  if (!isAdmin && toggleCategoryModal) {
+                    dispatch(
+                      toggleCategoryModal({
+                        categoryModalVisible: true,
+                      })
+                    );
+                    filterDataByCategory(filteredProducts, item.id);
+                  }
+                }}
+              >
+                <View
                   style={
                     indexCheck === item.id
-                      ? { ...styles.smallCardTextSected }
-                      : { ...styles.smallCardText }
+                      ? { ...styles.smallCardSelected }
+                      : { ...styles.smallCard }
                   }
                 >
-                  {_.truncate(item.category as string, {
-                    separator: " ",
-                    length: 10,
-                  })}
-                </Text>
-              </View>
-            </View>
-          </Pressable>
-        )}
+                  <HeaderImage
+                    fallback={products[0].image}
+                    path={item.image as string}
+                  />
+
+                  <View>
+                    <Text
+                      style={
+                        indexCheck === item.id
+                          ? { ...styles.smallCardTextSected }
+                          : { ...styles.smallCardText }
+                      }
+                    >
+                      {_.truncate(item.category as string, {
+                        separator: " ",
+                        length: 10,
+                      })}
+                    </Text>
+                  </View>
+                </View>
+              </Pressable>
+            ) as any;
+          }
+        }}
       />
     </View>
   );

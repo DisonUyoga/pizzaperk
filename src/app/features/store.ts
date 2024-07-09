@@ -8,8 +8,8 @@ export const store = configureStore({
   reducer: {
     cart: cartSlice,
     auth: AuthSlice,
-    error: productSlice,
-    admin: adminSlice
+    product: productSlice,
+    admin: adminSlice,
   },
 });
 

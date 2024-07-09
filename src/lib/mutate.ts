@@ -84,6 +84,7 @@ export function useDeleteCategory() {
     mutationFn: (id: number) => deleteCategory(id),
     onSuccess: async (_, id) => {
       await queryClient.invalidateQueries({ queryKey: ["categories"] });
+      await queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 }
@@ -111,9 +112,7 @@ export function useCreateOrderItem() {
       items: InsertTables<"order_items">[];
       order_id: number;
     }) => createOrderItem(items, order_id),
-    onError: (error) => {
-      console.log(error);
-    },
+    onError: (error) => {},
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
@@ -130,9 +129,7 @@ export function useUpdateOrder() {
       updatedFields: UpdateTables<"orders">;
       id: string;
     }) => getOrderUpdate({ updatedFields, id }),
-    onError: (error) => {
-      console.log(error);
-    },
+    onError: (error) => {},
     onSuccess: (_, data) => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
       queryClient.invalidateQueries({ queryKey: ["orders", data.id] });
@@ -144,8 +141,6 @@ export function useStripePayment() {
   return useMutation({
     mutationFn: ({ url, data, method }: RequestParameters) =>
       getStripe({ url, data, method }),
-    onError: (error) => {
-      console.log(error);
-    },
+    onError: (error) => {},
   });
 }

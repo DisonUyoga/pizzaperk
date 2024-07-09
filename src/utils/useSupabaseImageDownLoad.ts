@@ -12,7 +12,7 @@ export function useSupabaseImageDownLoad(path: string | undefined) {
         .download(path);
 
       if (error) {
-        console.log(error);
+        
       }
 
       if (data) {

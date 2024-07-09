@@ -37,7 +37,7 @@ const CreateCategory = ({
 }: FreeDeliveryProps) => {
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
-  const { globalErrors } = useAppSelector((state) => state.error);
+  const { globalErrors } = useAppSelector((state) => state.product);
   const [error, setError] = useState<any>([...globalErrors]);
   const [file, setFile] = useState<ImagePicker.ImagePickerAsset>();
   const { mutate, isPending } = useCreateCategory();
@@ -80,7 +80,6 @@ const CreateCategory = ({
           onSuccess: () => {
             toast(category, "success");
             toggleCreateVisible();
-            
           },
         }
       );
@@ -92,7 +91,7 @@ const CreateCategory = ({
       );
     }
   }
-  console.log(category, image);
+ 
   return (
     <Modal animationType="fade" transparent={true} visible={createVisible}>
       <Animatable.View

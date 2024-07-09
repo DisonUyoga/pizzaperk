@@ -6,9 +6,11 @@ interface GlobalErrorProps {
 
 interface StateProps {
   globalErrors: string[];
+  categoryModalVisible: boolean;
 }
 const initialState: StateProps = {
   globalErrors: [],
+  categoryModalVisible: false,
 };
 
 const productSlice = createSlice({
@@ -19,9 +21,16 @@ const productSlice = createSlice({
       const { error } = action.payload;
       state.globalErrors.push(error);
     },
+    toggleCategoryModal(
+      state,
+      action: PayloadAction<{ categoryModalVisible: boolean }>
+    ) {
+      
+      state.categoryModalVisible = !state.categoryModalVisible;
+    },
   },
 });
 
-export const { globalError } = productSlice.actions;
+export const { globalError, toggleCategoryModal } = productSlice.actions;
 
 export default productSlice.reducer;
