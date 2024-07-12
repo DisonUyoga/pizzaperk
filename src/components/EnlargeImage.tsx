@@ -10,7 +10,7 @@ type RemoteImageProps = {
   fallback: string;
 } & Omit<ComponentProps<typeof Image>, "source">;
 
-const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
+const EnlargeImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
   const image = useSupabaseImageDownLoad(path);
 
   if (!image) {
@@ -27,10 +27,10 @@ const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
   );
 };
 
-export default RemoteImage;
+export default EnlargeImage;
 const styles = StyleSheet.create({
   image: {
-    width: 75,
+    width: "100%",
     aspectRatio: 1,
   },
 });

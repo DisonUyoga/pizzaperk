@@ -14,7 +14,7 @@ const Root = () => {
       screenOptions={{
         headerTintColor: "#fff",
         headerStyle: {
-          backgroundColor: "#040463",
+          backgroundColor: "#161622",
         },
 
         headerTitleStyle: {
@@ -22,7 +22,7 @@ const Root = () => {
           fontWeight: "300",
         },
         headerRight: () => (
-          <Link href="/cart" asChild>
+          <Link href="/user/menu/cart" asChild>
             <Pressable>
               {({ pressed }) => (
                 <View className="relative">

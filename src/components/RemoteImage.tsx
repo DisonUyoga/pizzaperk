@@ -19,9 +19,9 @@ const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
   return (
     <Image
       style={styles.image}
-      source={image || fallback}
+      source={image}
       placeholder={{ blurhash }}
-      contentFit="contain"
+      contentFit="cover"
       transition={1000}
     />
   );
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 100,
+    height: 100,
     aspectRatio: 1,
     borderRadius: 5,
   },

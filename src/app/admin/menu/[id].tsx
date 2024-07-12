@@ -56,7 +56,7 @@ const ProductDetail = () => {
   };
   function updateSize() {
     if (update) {
-      router.push("/cart");
+      router.push("/user/menu/cart");
     }
   }
 
@@ -68,7 +68,7 @@ const ProductDetail = () => {
       setLoading(false);
       toast("item added to cart", "green");
 
-      router.push("/cart");
+      router.push("/user/menu/cart");
     } catch (error: any) {
       Alert.alert("Error", error);
     } finally {

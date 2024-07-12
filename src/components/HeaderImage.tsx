@@ -18,10 +18,10 @@ const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
 
   return (
     <Image
-      style={{ height: 60, width: 60, borderRadius: 30 }}
+      style={{ height: 60, width: 60, borderRadius: 5 }}
       source={image || fallback}
       placeholder={{ blurhash }}
-      contentFit="contain"
+      contentFit="cover"
       transition={1000}
     />
   );

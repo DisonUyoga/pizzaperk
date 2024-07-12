@@ -25,7 +25,7 @@ const initialState = {
   cartItems: [],
   totalAmount: 0,
   totalQuantity: 0,
-  sizes: "M",
+  sizes: "XL",
 } as CartProps;
 
 const cartSlice = createSlice({
@@ -115,6 +115,16 @@ const cartSlice = createSlice({
       state.totalAmount = 0;
       state.totalQuantity = 0;
     },
+
+    updateCartTotalAfterSizeChange(state, action) {
+      const { newTotal, changedItem, price } = action.payload;
+      state.totalAmount = newTotal;
+
+      const existingItem = state.cartItems.find((i) => i.id === changedItem.id);
+      if (existingItem) {
+        existingItem.price = price;
+      }
+    },
   },
 });
 
@@ -125,6 +135,7 @@ export const {
   decreaseQuantity,
   selectSize,
   clearCart,
+  updateCartTotalAfterSizeChange,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,22 +1,15 @@
-import { View, Text, Pressable, TouchableOpacity } from "react-native";
-import React, { memo, useRef } from "react";
-import { OrderItem } from "../type";
-import { Image } from "expo-image";
-import Badge from "./Badge";
-import * as Animatable from "react-native-animatable";
-import { Link, useRouter, useSegments } from "expo-router";
-import Button from "./Button";
-import { addToCart } from "../app/features/slices/cartSlice";
-import { useDispatch } from "react-redux";
-import { toast } from "../utils/toast";
-import { useAppDispatch, useAppSelector } from "../utils/hooks";
 import products from "@/assets/data/products";
-import { StyleSheet } from "react-native";
-import { blurhash } from "@/assets/data/products";
-import { Tables } from "../database.types";
-import RemoteImage from "./RemoteImage";
+import { Link, useRouter, useSegments } from "expo-router";
 import _ from "lodash";
+import React, { memo, useRef } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { addToCart } from "../app/features/slices/cartSlice";
+import { Tables } from "../database.types";
 import { calcDis } from "../utils/discountCalculator";
+import { useAppDispatch, useAppSelector } from "../utils/hooks";
+import { toast } from "../utils/toast";
+import Badge from "./Badge";
+import RemoteImage from "./RemoteImage";
 
 const zoomIn: any = {
   0: {
@@ -61,8 +54,6 @@ const ProductCard = ({
     dispatch(addToCart({ product, size }));
 
     toast("item added to cart", "success");
-
-    // router.push("/cart");
   }
   const description = _.truncate(product.description as string, {
     separator: " ",
@@ -73,15 +64,6 @@ const ProductCard = ({
     length: 25,
   });
 
-  if (product.categories) {
-    categoryRef.current = product.categories;
-  }
-
-  const category = _.truncate(categoryRef.current.category as string, {
-    separator: " ",
-    length: 20,
-  });
-
   if (product?.discount) {
     checkDiscountRef.current = product?.discount > product?.price;
   }
@@ -89,7 +71,7 @@ const ProductCard = ({
   return (
     <Link href={`/${segments[0]}/menu/${product?.id}`} asChild>
       <TouchableOpacity
-        className="flex-row space-x-2 bg-card py-2 rounded px-4"
+        className="flex-row space-x-2 bg-card py-4 rounded px-4"
         activeOpacity={0.6}
         onPress={() => {
           if (toggleModal && !isAdmin) {

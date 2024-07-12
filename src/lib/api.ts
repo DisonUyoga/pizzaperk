@@ -6,7 +6,7 @@ export async function getCategories() {
   const { data, error } = await supabase
     .from("categories")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: true });
   if (error) {
     throw new Error(error.message);
   }
@@ -44,6 +44,9 @@ export async function createProduct(data: InsertTables<"products">) {
       discount: data.discount,
       description: data.description,
       category_id: data.category_id,
+      size_large: data.size_large,
+      size_medium: data.size_medium,
+      size_small: data.size_small,
       image:
         data.image ??
         "https://cdn.pixabay.com/photo/2019/10/14/05/37/pizza-4547868_960_720.png",
@@ -78,6 +81,9 @@ export async function updateProduct(data: InsertTables<"products">) {
       image: data.image,
       category_id: data.category_id,
       description: data.description,
+      size_large: data.size_large,
+      size_medium: data.size_medium,
+      size_small: data.size_small,
       discount: data.discount,
     })
     .eq("id", data.id as number)

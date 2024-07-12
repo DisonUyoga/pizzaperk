@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "721574451938",
+    "project_id": "pizzaperk-4d366",
+    "storage_bucket": "pizzaperk-4d366.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721574451938:android:a55cc3f863df10173e5cbb",
+        "android_client_info": {
+          "package_name": "com.disonobudho.pizzaperk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMfTX6v7RiVD47zgnPyrguLYe2TjjFMXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

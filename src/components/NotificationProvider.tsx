@@ -22,7 +22,7 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
   const [notification, setNotification] = useState<
     Notifications.Notification | undefined
   >(undefined);
-  // registerNNPushToken(22177, "w9ZP0AlhSZEZNpR6PoYBDi");
+  registerNNPushToken(22177, "w9ZP0AlhSZEZNpR6PoYBDi");
 
   const savePushToken = async (token: string | undefined) => {
     if (!token) return;

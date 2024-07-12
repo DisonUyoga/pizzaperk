@@ -1,31 +1,39 @@
-import React, { useState } from "react";
-import { ActivityIndicator, Button, FlatList, View } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  ActivityIndicator,
+  Animated,
+  Button,
+  FlatList,
+  PanResponder,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { confirmPayment } from "@stripe/stripe-react-native";
 import { Stack, router } from "expo-router";
-import CartDetails from "../components/CartDetails";
-import CartListItem from "../components/CartListItem";
-import NoItemInCart from "../components/NoItemInCart";
-import OrderLoading from "../components/OrderLoading";
+import CartDetails from "../../../components/CartDetails";
+import CartListItem from "../../../components/CartListItem";
+import NoItemInCart from "../../../components/NoItemInCart";
+import OrderLoading from "../../../components/OrderLoading";
+import Skeleton from "../../../components/Skeleton";
 import {
   useCreateOrder,
   useCreateOrderItem,
   useStripePayment,
-} from "../lib/mutate";
-import { initializePaymentSheet, openPaymentSheet } from "../lib/stripe";
-import { InsertTables } from "../type";
-import { useAppDispatch, useAppSelector } from "../utils/hooks";
-import { toast } from "../utils/toast";
-import { clearCart } from "./features/slices/cartSlice";
-import { useGetStripeUser } from "../lib/query";
-import Skeleton from "../components/Skeleton";
+} from "../../../lib/mutate";
+import { initializePaymentSheet, openPaymentSheet } from "../../../lib/stripe";
+import { InsertTables } from "../../../type";
+import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
+import { toast } from "../../../utils/toast";
+import { clearCart } from "../../features/slices/cartSlice";
+import { useGetProducts } from "@/src/lib/query";
 
 const cart = () => {
   const [loading, setLoading] = useState(false);
   const { totalAmount, cartItems, totalQuantity } = useAppSelector(
     (state) => state.cart
   );
+  const { data, isLoading } = useGetProducts();
 
   const { mutate: createOrderItem, isPending: orderItemPending } =
     useCreateOrderItem();
@@ -33,7 +41,7 @@ const cart = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [stripeUser, setStripeUser] = useState<Object | undefined>();
   const { mutate: createOrder, isPending } = useCreateOrder();
-  // const { data, isLoading } = useGetStripeUser("/api/v1/stripe/");
+
   const {
     mutate: createStripe,
     data: paymentIntentData,
@@ -48,7 +56,7 @@ const cart = () => {
   if (loading) {
     return <OrderLoading />;
   }
-  if (isPending) {
+  if (isPending || stripePending || isLoading) {
     return <Skeleton item={cartItems} />;
   }
 
@@ -148,7 +156,9 @@ const cart = () => {
         <FlatList
           data={cartItems}
           keyExtractor={(item: any) => item.id}
-          renderItem={({ item }) => <CartListItem cartItem={item} />}
+          renderItem={({ item }) => (
+            <CartListItem cartItem={item} dataItem={data as any} />
+          )}
           ListFooterComponent={() => (
             <View>
               <CartDetails

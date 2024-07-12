@@ -22,6 +22,7 @@ export const validationSchema = Yup.object().shape({
     .positive("discount must be a positive number")
     .min(1, "The discount must be atleast one")
     .notRequired(),
+  categoryId: Yup.number().required("Category is required"),
 });
 
 export const userValidation = Yup.object().shape({

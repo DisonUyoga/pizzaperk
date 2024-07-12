@@ -3,6 +3,7 @@ import React from "react";
 import { Redirect, useLocalSearchParams } from "expo-router";
 import { useAppSelector } from "@/src/utils/hooks";
 import Loading from "@/src/components/Loading";
+import GrowingLoader from "@/src/components/GrowingLoader";
 
 const Page = () => {
   const { adminToUser, userToAdmin } = useLocalSearchParams();
@@ -11,7 +12,11 @@ const Page = () => {
   );
 
   if (authLoading) {
-    return <Loading />;
+    return (
+      <View className="bg-primary  flex-1">
+        <GrowingLoader />
+      </View>
+    );
   }
 
   if (!session) {

@@ -1,6 +1,6 @@
 import { Link, Redirect, Stack, router } from "expo-router";
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { Text, View, StyleSheet, Pressable, Alert } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -20,6 +20,8 @@ import Animated, {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppSelector } from "../utils/hooks";
 import Loading from "../components/Loading";
+import { useGetProducts } from "../lib/query";
+import GrowingLoader from "../components/GrowingLoader";
 
 const onboardingSteps = [
   {
@@ -45,8 +47,13 @@ const onboardingSteps = [
 export default function OnboardingScreen() {
   const [screenIndex, setScreenIndex] = useState(0);
   const { user, authLoading, isAdmin } = useAppSelector((state) => state.auth);
+  const { data: productData, isLoading, error } = useGetProducts();
 
   const data = onboardingSteps[screenIndex];
+  if (isLoading && authLoading) {
+    return <Loading />;
+  }
+
   if (user) {
     return <Redirect href={"/user"} />;
   }

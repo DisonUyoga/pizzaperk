@@ -2,8 +2,13 @@ import { Link, Redirect, Stack } from "expo-router";
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "@/src/components/Themed";
+import { useAppSelector } from "../utils/hooks";
 
 export default function NotFoundScreen() {
+  const { session } = useAppSelector((state) => state.auth);
+  if (!session) {
+    return <Redirect href={"/sign-in"} />;
+  }
   return <Redirect href={"/user"} />;
 }
 

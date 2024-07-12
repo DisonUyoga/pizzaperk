@@ -25,6 +25,7 @@ interface ProductsOnOfferProps {
   toggleFinish: () => void;
   toggleCategory?: () => void;
   setCategoryId?: (id: number) => void;
+  adminToUser?: any;
 }
 
 const ProductsOnOffer = ({
@@ -36,6 +37,7 @@ const ProductsOnOffer = ({
   toggleFinish,
   toggleCategory,
   setCategoryId,
+  adminToUser,
 }: ProductsOnOfferProps) => {
   const [animateItemItem, setAnimateItem] = useState<any>();
   const [indexCheck, setIndexCheck] = useState(0);
@@ -47,7 +49,7 @@ const ProductsOnOffer = ({
     categories: Tables<"categories">,
     products: Tables<"products">[]
   ) {
-    const validateCategory = products.map((p) => {
+    const validateCategory = products.map((p: any) => {
       if (p.categories.id === categories.id) {
         return true;
       }
@@ -97,7 +99,11 @@ const ProductsOnOffer = ({
                     toggleCategory();
                     setCategoryId(item.id);
                   }
-                  if (!isAdmin && toggleCategoryModal) {
+
+                  if (
+                    (!isAdmin && toggleCategoryModal) ||
+                    adminToUser === "true"
+                  ) {
                     dispatch(
                       toggleCategoryModal({
                         categoryModalVisible: true,
@@ -147,7 +153,7 @@ export default ProductsOnOffer;
 
 const styles = StyleSheet.create({
   smallCard: {
-    borderRadius: 30,
+    borderRadius: 5,
     backgroundColor: colors.grey5,
     justifyContent: "center",
     alignItems: "center",

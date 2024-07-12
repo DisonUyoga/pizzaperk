@@ -43,6 +43,7 @@ const GoogleLogin = () => {
       if (!user) {
         if (response?.type === "success") {
           toast("google sign in successfull", "success");
+          dispatch(processingAuth({ authLoading: true }));
           await getUserInfo(response.authentication?.accessToken);
         }
       } else {
@@ -75,6 +76,7 @@ const GoogleLogin = () => {
   }
 
   async function getUserInfo(token: string | undefined) {
+    dispatch(processingAuth({ authLoading: true }));
     try {
       const res = await fetch("https://www.googleapis.com/userinfo/v2/me", {
         headers: { Authorization: `Bearer ${token}` },
@@ -91,6 +93,7 @@ const GoogleLogin = () => {
   }
 
   async function handleSignInWithGoogle(user: any) {
+    dispatch(processingAuth({ authLoading: true }));
     if (!user) return;
     await AsyncStorage.setItem("@user", JSON.stringify(user));
 
@@ -98,9 +101,6 @@ const GoogleLogin = () => {
       email: user?.email,
       name: user?.name,
     };
-    if (data.email) {
-      dispatch(sessionToken({ session: data }));
-    }
 
     const { error: supabaseError } = await supabase.auth.signUp({
       email: data.email,
@@ -125,6 +125,7 @@ const GoogleLogin = () => {
               },
             })
           );
+          dispatch(processingAuth({ authLoading: false }));
         }
 
         dispatch(setUser({ user: data.session }));
@@ -142,7 +143,7 @@ const GoogleLogin = () => {
           );
           dispatch(processingAuth({ authLoading: false }));
         }
-        return <Redirect href={"/user/menu"} />;
+        return;
       }
     }
     if (supabaseError?.message !== "User already registered") {

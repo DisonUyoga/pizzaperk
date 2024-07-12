@@ -71,16 +71,28 @@ export default function TabOneScreen() {
       const categoryItems = categorizeItems(productData);
       if (categoryItems) {
         const f = formatDataForSectionList(categoryItems);
-        // setSectionData(f);
       }
     }
+    setTimeout(() => {
+      refreshData();
+    }, 300);
     if (!isLoading) {
       setFilterData(productData as any);
     }
     if (delivery?.length) {
       dateChanged();
     }
-  }, [isLoading, delivery]);
+  }, [delivery, productData]);
+  const formatDataForSectionList = (categorizedItems: any) => {
+    const f = Object.keys(categorizedItems).map((key) => {
+      return {
+        categoryId: key,
+        data: categorizedItems[key],
+      };
+    });
+    setSectionData(f);
+    return f;
+  };
 
   if (isLoading || isLoadingCategory) {
     return <Skeleton />;
@@ -135,22 +147,13 @@ export default function TabOneScreen() {
   function setCategoryId(id: number) {
     setCategoryItemId(id);
   }
-  const formatDataForSectionList = (categorizedItems: any) => {
-    const f = Object.keys(categorizedItems).map((key) => {
-      return {
-        categoryId: key,
-        data: categorizedItems[key],
-      };
-    });
-    setSectionData(f);
-    return f;
-  };
+
   return (
     <SafeAreaView className="bg-primary flex-1">
       <Stack.Screen options={{ headerShown: false }} />
 
       <Pressable className=" bg-primary  w-full">
-        {sectionData ? (
+        {sectionData && (
           <SectionList
             sections={sectionData}
             keyExtractor={(item) => item.id}
@@ -163,6 +166,9 @@ export default function TabOneScreen() {
                 />
               </View>
             )}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
+            }
             ListHeaderComponent={() => (
               <Animated.View
                 entering={FadeIn}
@@ -283,7 +289,7 @@ export default function TabOneScreen() {
               const cat = categories?.find(
                 (c) => c.id === parseInt(categoryId)
               );
-              
+
               return (
                 <View className="bg-transparent px-4">
                   <Text className="text-white  font-thin">{cat?.category}</Text>
@@ -291,10 +297,6 @@ export default function TabOneScreen() {
               );
             }}
           />
-        ) : (
-          <View className="w-full">
-            <Skeleton />
-          </View>
         )}
       </Pressable>
     </SafeAreaView>

@@ -212,7 +212,7 @@ function RootLayoutNav() {
                       name="admin"
                       options={{ headerShown: false }}
                     />
-                    <Stack.Screen name="cart" />
+
                     <Stack.Screen
                       name="(auth)"
                       options={{ headerShown: false }}

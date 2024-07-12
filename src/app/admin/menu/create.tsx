@@ -38,7 +38,10 @@ import styled from "styled-components/native";
 
 const Create = () => {
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState<string | null>(null);
+  const [smallSize, setSmallSize] = useState<number | null>(null);
+  const [mediumSize, setMediumSize] = useState<number | null>(null);
+  const [largeSize, setLargeSize] = useState<number | null>(null);
   const [price, setPrice] = useState<number | null>(null);
   const [discount, setDiscount] = useState<number | null>(null);
   const [image, setImage] = useState<string | null>(null);
@@ -55,7 +58,9 @@ const Create = () => {
   const { create } = useLocalSearchParams();
   const [whenCreatingLoader, setWhenCreatingLoader] = useState(create);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("pizza");
+  const [selectedCategory, setSelectedCategory] = useState<
+    string | null | undefined
+  >(null);
   const [categoryId, setCategoryId] = useState<number | undefined>();
   const {
     data: categories,
@@ -75,13 +80,26 @@ const Create = () => {
       setPrice(updatingProduct.price);
       setImage(updatingProduct.image);
       setDiscount(updatingProduct.discount);
+      setSmallSize(updatingProduct.size_small);
+      setMediumSize(updatingProduct.size_medium);
+      setLargeSize(updatingProduct.size_large);
       setCategoryId(updatingProduct.category_id as number);
       const filteredCategory = categories?.find(
-        (c) => c.id === updatingProduct.category_id
+        (c: any) => c.id === updatingProduct.category_id
       );
       setSelectedCategory(filteredCategory?.category as string);
     }
   }, [updatingProduct]);
+  useEffect(() => {
+    if (!isLoadingCategory && categories) {
+      toggleModal(categories[0].category);
+    }
+  }, [isLoadingCategory]);
+  function toggleModal(category?: string | null, id?: number) {
+    setModalVisible(!modalVisible);
+    setSelectedCategory(category);
+    setCategoryId(id);
+  }
   if (isLoadingCategory) {
     return <OrderPlaceholderSkeleton />;
   }
@@ -158,6 +176,7 @@ const Create = () => {
         price: price,
         discount,
         image,
+        categoryId,
       });
       const imagePath = (await uploadImage(file, image as string)) as
         | string
@@ -171,6 +190,9 @@ const Create = () => {
           description,
           image: imagePath,
           category_id: categoryId,
+          size_small: smallSize,
+          size_medium: mediumSize,
+          size_large: largeSize,
         },
         {
           onSuccess: () => {
@@ -207,6 +229,9 @@ const Create = () => {
           image: imagePath,
           price: price as number,
           category_id: categoryId,
+          size_small: smallSize,
+          size_medium: mediumSize,
+          size_large: largeSize,
         },
         {
           onSuccess: () => {
@@ -261,12 +286,11 @@ const Create = () => {
     setPrice(null);
     setImage(null);
     setFile(undefined);
-  }
-
-  function toggleModal(category = "pizza", id?: number) {
-    setModalVisible(!modalVisible);
-    setSelectedCategory(category);
-    setCategoryId(id);
+    setDescription(null);
+    setDiscount(null);
+    setSmallSize(null);
+    setSmallSize(null);
+    setLargeSize(null);
   }
 
   return (
@@ -320,10 +344,31 @@ const Create = () => {
             handleChange={(e) => setDescription(e)}
           />
           <FormElement
-            label="New Price*"
-            placeholder="price..."
+            label="XL price*"
+            placeholder="extra large price..."
             value={isUpdating ? price?.toString() : price}
             handleChange={(e) => setPrice(e as unknown as number)}
+            keyboardType="numeric"
+          />
+          <FormElement
+            label="L price*"
+            placeholder="large price..."
+            value={isUpdating ? largeSize?.toString() : largeSize}
+            handleChange={(e) => setLargeSize(e as unknown as number)}
+            keyboardType="numeric"
+          />
+          <FormElement
+            label="M price*"
+            placeholder="medium price..."
+            value={isUpdating ? mediumSize?.toString() : mediumSize}
+            handleChange={(e) => setMediumSize(e as unknown as number)}
+            keyboardType="numeric"
+          />
+          <FormElement
+            label="S price*"
+            placeholder="small price..."
+            value={isUpdating ? smallSize?.toString() : smallSize}
+            handleChange={(e) => setSmallSize(e as unknown as number)}
             keyboardType="numeric"
           />
           <FormElement

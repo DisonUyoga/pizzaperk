@@ -115,6 +115,6 @@ export async function notifyUserAboutOrder(order: Tables<"orders">, status: Orde
             message="Your order has been received it will be ready within an hour"
     }
     
-    // await nativeNotify(message)
-    sendPushNotification(token as unknown as Notifications.ExpoPushToken, "PizzaPerk", message)
+    await nativeNotify(message)
+    // sendPushNotification(token as unknown as Notifications.ExpoPushToken, "PizzaPerk", message)
 }

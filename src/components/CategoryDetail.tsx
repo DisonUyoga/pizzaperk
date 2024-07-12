@@ -16,6 +16,7 @@ import { toast } from "../utils/toast";
 import products from "@/assets/data/products";
 import ProductDetailImage from "./ProductDetailImage";
 import { useDeleteCategory } from "../lib/mutate";
+import EnlargeImage from "./EnlargeImage";
 
 interface CategoryProps {
   openCategory: boolean;
@@ -58,14 +59,16 @@ const CategoryDetail = ({
       <Animatable.View
         animation={"fadeInDown"}
         duration={1000}
-        className="w-full p-4 bg-white relative"
+        className="w-full  bg-white relative"
       >
         {categoryItem && (
-          <View className="w-full">
-            <ProductDetailImage
-              fallback={products[0].image}
-              path={categoryItem?.image as string}
-            />
+          <View className="w-full px-4 py-4 mt-6">
+            <View className="px-4">
+              <EnlargeImage
+                fallback={""}
+                path={categoryItem?.image as string}
+              />
+            </View>
             <Text className="mt-4 font-bold">{categoryItem.category}</Text>
             <View className="w-full mt-2">
               {isPendingDelete ? (

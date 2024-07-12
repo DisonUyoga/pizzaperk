@@ -2,7 +2,9 @@
 .branches
 .temp
 .env
-/node_modules
-/eas.json
-/app.json
+node_modules
+eas.json
+app.json
 Supabase
+google-services.json
+app.config.js

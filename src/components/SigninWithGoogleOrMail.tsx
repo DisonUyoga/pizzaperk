@@ -97,7 +97,7 @@ const SigninWithGoogleOrMail = ({ title, type }: SignInWithGoogleProps) => {
         );
         dispatch(processingAuth({ authLoading: false }));
       }
-      return <Redirect href={"/user/menu"} />;
+      return <Redirect href={"/user"} />;
     }
   }
 
