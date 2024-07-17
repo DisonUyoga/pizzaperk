@@ -1,4 +1,6 @@
-export const sizes = ["S", "M", "L", "XL"];
+import { PizzaSize } from "@/src/type";
+
+export const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
 const products = [
   {
     id: 1,

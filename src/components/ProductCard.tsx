@@ -71,10 +71,10 @@ const ProductCard = ({
   return (
     <Link href={`/${segments[0]}/menu/${product?.id}`} asChild>
       <TouchableOpacity
-        className="flex-row space-x-2 bg-card py-4 rounded px-4"
+        className="flex-row space-x-6 bg-card py-4 rounded px-4"
         activeOpacity={0.6}
         onPress={() => {
-          if (toggleModal && !isAdmin) {
+          if (toggleModal) {
             toggleModal();
           }
         }}
@@ -84,11 +84,11 @@ const ProductCard = ({
           path={product.image as string}
         />
 
-        <View className="space-y-2 w-4/6">
+        <View className="space-y-2 ">
           <View className="space-y-2 w-full">
             <Text className=" text-white font-bold text-sm">{name}</Text>
 
-            <View className="flex-row  justify-between gap-x-4">
+            <View className="flex-row  justify-between space-x-6">
               <View className="">
                 {product?.discount && (
                   <Badge
@@ -107,9 +107,6 @@ const ProductCard = ({
                 <View className="flex-row">
                   <Text className="text-xl text-secondary font-thin">
                     {calcDis(product.price, product.discount as number)}
-                  </Text>
-                  <Text className="text-secondary-100 font-thin text-xs ">
-                    off
                   </Text>
                 </View>
               )}

@@ -21,7 +21,7 @@ const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
       style={styles.image}
       source={image}
       placeholder={{ blurhash }}
-      contentFit="contain"
+      contentFit="cover"
       transition={1000}
     />
   );

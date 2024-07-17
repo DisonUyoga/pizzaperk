@@ -39,7 +39,16 @@ const OrderDetail = () => {
 
   return (
     <SafeAreaView className="bg-primary px-4 flex-1">
-      <Stack.Screen options={{ title: `#${orderId}` }} />
+      <Stack.Screen
+        options={{
+          title: `#${orderId}`,
+          headerShown: true,
+          headerTitleStyle: {
+            color: "#ffff",
+            fontWeight: "300",
+          },
+        }}
+      />
       <View className="mb-2">
         <Text className="text-white mb-2">Order Item</Text>
         {order && <OrderListItem order={order} />}

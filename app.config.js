@@ -10,7 +10,7 @@ export default {
     splash: {
       image: "./assets/images/admin.png",
       resizeMode: "contain",
-      backgroundColor: "#ffffff",
+      backgroundColor: "#161622",
     },
     ios: {
       supportsTablet: true,

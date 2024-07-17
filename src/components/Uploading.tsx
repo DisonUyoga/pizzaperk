@@ -1,4 +1,5 @@
 // App.js
+import { Stack } from "expo-router";
 import LottieView from "lottie-react-native";
 import React from "react";
 import { StyleSheet, View } from "react-native";
@@ -6,6 +7,14 @@ import { StyleSheet, View } from "react-native";
 export default function UpLoading() {
   return (
     <View style={styles.container} className="w-full">
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          headerTitleStyle: {
+            color: "#161622",
+          },
+        }}
+      />
       <LottieView
         source={require("../../assets/uploading.json")}
         autoPlay

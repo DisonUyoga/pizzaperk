@@ -1,9 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
-import { PizzaSize } from "../type";
+import { PizzaSize, Tables } from "../type";
+import { CartItems } from "../app/features/slices/cartSlice";
 interface SelectSizeProps {
-  sizes: string;
-  handleSelected: (size: string) => void;
+  sizes: PizzaSize;
+  handleSelected: (size: PizzaSize) => void;
   selected: string;
 }
 const SelectSize = ({ sizes, handleSelected, selected }: SelectSizeProps) => {

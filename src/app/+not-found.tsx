@@ -9,7 +9,19 @@ export default function NotFoundScreen() {
   if (!session) {
     return <Redirect href={"/sign-in"} />;
   }
-  return <Redirect href={"/user"} />;
+  return (
+    <View>
+      <Stack.Screen
+        options={{
+          headerTitleStyle: {
+            color: "#161622",
+          },
+          headerShown: false,
+        }}
+      />
+      <Redirect href={"/user"} />;
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

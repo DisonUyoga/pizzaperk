@@ -20,6 +20,7 @@ import { calcDis } from "../utils/discountCalculator";
 import { useAppDispatch, useAppSelector } from "../utils/hooks";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "./constants/Colors";
+import { PizzaSize } from "../type";
 
 interface CartDetailsProps {
   product?: Tables<"products">;
@@ -28,6 +29,10 @@ interface CartDetailsProps {
   totalItems?: number;
   containerStyles?: string;
   textStyles?: string;
+
+  selected?: PizzaSize;
+
+  priceSize?: number | null;
 }
 const CartDetails = ({
   product,
@@ -36,18 +41,25 @@ const CartDetails = ({
   totalItems,
   containerStyles,
   textStyles,
+
+  selected,
+
+  priceSize,
 }: CartDetailsProps) => {
   const [item, setItem] = useState<CartItems | undefined>();
+
   const dispatch = useAppDispatch();
   const { cartItems } = useAppSelector((state) => state.cart);
   useEffect(() => {
     checkIfItemExistInCart();
-  }, [cartItems]);
+  }, [cartItems, product]);
   function checkIfItemExistInCart() {
     const cartItem = cartItems.find((i) => i.id === product?.id);
+
     if (!cartItem) {
       return;
     }
+
     setItem(cartItem);
   }
 
@@ -55,15 +67,19 @@ const CartDetails = ({
     <View>
       {product?.discount && (
         <View className="flex-row rounded-full justify-between items-center mt-4 mb-7">
-          <Text className="text-secondary  text-xl font-thin text-center ">
-            {calcDis(product?.price, product?.discount)}
-          </Text>
-          {item && (
+          {product?.price < product?.discount && (
+            <Text className="text-secondary  text-xl font-thin text-center ">
+              {calcDis(product?.price, product?.discount)}
+            </Text>
+          )}
+          {item && item.quantity > 0 && (
             <View style={styles.quantitySelector}>
               <TouchableOpacity activeOpacity={0.7}>
                 <FontAwesome
                   onPress={() => {
-                    dispatch(decreaseQuantity(item));
+                    if (item) {
+                      dispatch(decreaseQuantity(item));
+                    }
                   }}
                   name="minus"
                   color="gray"
@@ -71,10 +87,16 @@ const CartDetails = ({
                 />
               </TouchableOpacity>
 
-              {item && <Text style={styles.quantity}>{item.quantity}</Text>}
+              {item?.quantity > 0 && (
+                <Text style={styles.quantity}>{item.quantity}</Text>
+              )}
               <TouchableOpacity activeOpacity={0.7}>
                 <FontAwesome
-                  onPress={() => dispatch(increaseQuantity(item))}
+                  onPress={() => {
+                    if (item) {
+                      dispatch(increaseQuantity(item));
+                    }
+                  }}
                   name="plus"
                   color="gray"
                   style={{ padding: 5 }}
@@ -89,20 +111,22 @@ const CartDetails = ({
       >
         {product && (
           <View className="items-center justify-between">
-            <Badge
-              otherStyles={`bg-white text-xs text-red-500 line-through rounded-t`}
-              price={product?.discount as number}
-            />
+            {selected === "XL" && (
+              <Badge
+                otherStyles={`bg-white text-xs text-red-500 line-through rounded-t`}
+                price={product?.discount as number}
+              />
+            )}
             <Badge
               otherStyles={`bg-secondary text-xs ${
-                product.discount ? "rounded-b" : "rounded"
+                product.discount && selected === "XL" ? "rounded-b" : "rounded"
               }`}
-              price={product?.price}
+              price={priceSize || product?.price}
             />
           </View>
         )}
         {quantity && <Text className={`${textStyles}`}>Qty: {quantity}</Text>}
-        {totalItems! > 0 && (
+        {totalItems && totalItems > 0 && (
           <Text className={`${textStyles}`}>Cart: {totalItems}</Text>
         )}
 

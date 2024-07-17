@@ -36,13 +36,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 10,
-    maxWidth: "50%",
-    maxHeight: 250,
   },
   image: {
     width: 100,
     height: 100,
-    aspectRatio: 1,
+
     borderRadius: 5,
   },
 });

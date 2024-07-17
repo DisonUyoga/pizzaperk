@@ -11,9 +11,10 @@ import { supabase } from "@/src/lib/supabase";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSubscription } from "@/src/utils/useSubscriptions";
 import OrderPlaceholderSkeleton from "@/src/components/OrderPlaceholderSkeleton";
+import NoItemInCart from "@/src/components/NoItemInCart";
 export default function Orders() {
   const orderItemSubscription = useSubscription();
-  const { data: orders, error, isLoading } = useAdminOrders();
+  const { data: orders, error, isLoading, isFetched } = useAdminOrders();
   // subscribe to the order insert channel for real time status update
   useSubscription();
   if (isLoading) {
@@ -21,6 +22,14 @@ export default function Orders() {
   }
   if (error) {
     return Alert.alert("Error Fetching Order", error.message);
+  }
+  if (!isFetched) {
+    return (
+      <NoItemInCart
+        text="There are no orders at the moment!!!"
+        title="Go to Dashboard"
+      />
+    );
   }
   return (
     <SafeAreaView className="bg-primary px-4 flex-1">

@@ -1,4 +1,5 @@
 // App.js
+import { Stack } from "expo-router";
 import LottieView from "lottie-react-native";
 import React from "react";
 import { StyleSheet, View } from "react-native";
@@ -6,6 +7,11 @@ import { StyleSheet, View } from "react-native";
 export default function DeletingLoader() {
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+      />
       <LottieView
         source={require("../../assets/growingLoader.json")}
         autoPlay

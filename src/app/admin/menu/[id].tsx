@@ -27,6 +27,7 @@ import ProductDetailImage from "@/src/components/ProductDetailImage";
 import Skeleton from "@/src/components/Skeleton";
 import ProductDetailSkeletonPlaceholder from "@/src/components/ProductDetailSkeletonPlaceholder";
 import { FontAwesome } from "@expo/vector-icons";
+import { PizzaSize } from "@/src/type";
 
 const ProductDetail = () => {
   const { id, update } = useLocalSearchParams();
@@ -49,7 +50,7 @@ const ProductDetail = () => {
   if (error) {
     return;
   }
-  const handleSelected = (size: string) => {
+  const handleSelected = (size: PizzaSize) => {
     if (!product) return;
     dispatch(selectSize({ size, product }));
     updateSize();
@@ -75,7 +76,9 @@ const ProductDetail = () => {
       setLoading(false);
     }
   }
-
+  function navigateToEditProduct() {
+    router.push(`/admin/menu/create/?id=${id}`);
+  }
   return (
     <SafeAreaView className="bg-primary flex-1 px-4 ">
       <ScrollView className="flex-1 space-y-6">
@@ -86,6 +89,7 @@ const ProductDetail = () => {
             headerStyle: {
               backgroundColor: "#161622",
             },
+            headerShown: true,
             headerTitleStyle: {
               color: "#ffff",
               fontWeight: "300",
@@ -120,15 +124,12 @@ const ProductDetail = () => {
             path={product?.image as string}
           />
 
-          <View className="flex-row w-full bg-transparent items-start justify-between mt-7 mb-7">
-            {sizes.map((item) => (
-              <SelectSize
-                key={item}
-                sizes={item}
-                handleSelected={handleSelected}
-                selected={selected}
-              />
-            ))}
+          <View className="mt-7">
+            <Button
+              title="Edit Product"
+              color={"green"}
+              onPress={navigateToEditProduct}
+            />
           </View>
         </View>
       </ScrollView>

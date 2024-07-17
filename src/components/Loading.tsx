@@ -1,4 +1,5 @@
 // App.js
+import { Stack } from "expo-router";
 import LottieView from "lottie-react-native";
 import React from "react";
 import { ScrollView } from "react-native";
@@ -7,6 +8,11 @@ import { StyleSheet, View } from "react-native";
 export default function Loading() {
   return (
     <View style={styles.container} className="bg-white">
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+      />
       <LottieView
         source={require("../../assets/loading.json")}
         autoPlay

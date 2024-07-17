@@ -123,6 +123,7 @@ const ProductsOnOffer = ({
                   <HeaderImage
                     fallback={products[0].image}
                     path={item.image as string}
+                    fit="cover"
                   />
 
                   <View>

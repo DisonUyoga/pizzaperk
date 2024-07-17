@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { confirmPayment } from "@stripe/stripe-react-native";
-import { Stack, router } from "expo-router";
+import { Stack, router, useLocalSearchParams } from "expo-router";
 import CartDetails from "../../../components/CartDetails";
 import CartListItem from "../../../components/CartListItem";
 import NoItemInCart from "../../../components/NoItemInCart";
@@ -34,6 +34,7 @@ const cart = () => {
     (state) => state.cart
   );
   const { data, isLoading } = useGetProducts();
+  const { product } = useAppSelector((state) => state.product);
 
   const { mutate: createOrderItem, isPending: orderItemPending } =
     useCreateOrderItem();
@@ -51,7 +52,7 @@ const cart = () => {
   const user_id = user?.user.id;
 
   if (!cartItems.length) {
-    return <NoItemInCart />;
+    return <NoItemInCart text="No item in Cart!!!" title="Add items" />;
   }
   if (loading) {
     return <OrderLoading />;
@@ -118,14 +119,6 @@ const cart = () => {
     const { error, paymentIntent } = await confirmPayment(
       client_secret as string
     );
-
-    // if (error) {
-    //   console.log(error.message);
-    //   Alert.alert(`Error: ${error.message}`);
-    // } else if (paymentIntent) {
-    //   toast("payment successfull", "green");
-    //   handleCreateOrderItem(dataItem);
-    // }
 
     toast(
       "Payment successfull, Your order is placed, please wait while we locate you with your order",

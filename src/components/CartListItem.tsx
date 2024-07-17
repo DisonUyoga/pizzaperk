@@ -37,6 +37,8 @@ const CartListItem = ({ cartItem, dataItem }: CartListItemProps) => {
   const [defaultSize, setDefaultSize] = useState<string | null>(null);
   const [changeTotal, setChangeTotal] = useState<number | null>(totalAmount);
   const dispatch = useAppDispatch();
+
+  const [isPizza, setIsPizza] = useState(false);
   const segments = useSegments();
 
   useEffect(() => {
@@ -46,6 +48,8 @@ const CartListItem = ({ cartItem, dataItem }: CartListItemProps) => {
   function changePriceAccordingToSize(c: CartItems, p: Tables<"products">[]) {
     const item = p.find((i) => i.id === c.id);
     if (!item) return;
+    const pizza = item.size_large || item.size_medium || item.size_small;
+    setIsPizza(!!pizza);
     checkIfSizesExist(item);
     switch (c.size) {
       case "S":
@@ -82,6 +86,7 @@ const CartListItem = ({ cartItem, dataItem }: CartListItemProps) => {
       setDefaultSize("XL");
     }
   }
+  function checkIfItemIsPizza(c: CartItems) {}
   return (
     <Pressable style={styles.container}>
       <Stack.Screen options={{ headerTintColor: "#fff" }} />
@@ -95,9 +100,11 @@ const CartListItem = ({ cartItem, dataItem }: CartListItemProps) => {
           <Text style={styles.price}>
             {priceTag(price ? price : cartItem.price)}
           </Text>
-          <Text className="text-xs">
-            Size: {defaultSize ? defaultSize : cartItem.size}
-          </Text>
+          {isPizza && (
+            <Text className="text-xs">
+              Size: {defaultSize ? defaultSize : cartItem.size}
+            </Text>
+          )}
         </View>
       </View>
       <View className="flex-col items-center">
@@ -121,15 +128,17 @@ const CartListItem = ({ cartItem, dataItem }: CartListItemProps) => {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity className="mt-4" activeOpacity={0.7}>
-          <Link
-            style={{ color: Colors.light.tint }}
-            className="text-xs"
-            href={`/user/menu/${cartItem.id}?update=${true}`}
-          >
-            Update Size
-          </Link>
-        </TouchableOpacity>
+        {isPizza && (
+          <TouchableOpacity className="mt-4" activeOpacity={0.7}>
+            <Link
+              style={{ color: Colors.light.tint }}
+              className="text-xs"
+              href={`/user/menu/${cartItem.id}?update=${true}`}
+            >
+              Update Size
+            </Link>
+          </TouchableOpacity>
+        )}
       </View>
     </Pressable>
   );

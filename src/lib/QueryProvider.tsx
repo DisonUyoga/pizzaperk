@@ -5,7 +5,7 @@ import { PropsWithChildren } from "react";
 // Create a client
 const queryClient = new QueryClient();
 
-export default function QueryProvider({ children }: PropsWithChildren) {
+export default async function QueryProvider({ children }: any) {
   return (
     // Provide the client to your App
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

@@ -182,7 +182,7 @@ export default function TabOneScreen() {
     refresh("delivery");
     setRefreshing(false);
   }
-  
+
   return (
     <SafeAreaView className="bg-primary flex-1">
       <Stack.Screen options={{ headerShown: false }} />
@@ -195,7 +195,11 @@ export default function TabOneScreen() {
           >
             <View className="flex-row w-full items-center justify-between bg-transparent">
               <Text style={styles.headerText}>{currentSection}</Text>
-              <HeaderImage path={imageHeader} fallback={products[0].image} />
+              <HeaderImage
+                fit="contain"
+                path={imageHeader}
+                fallback={products[0].image}
+              />
             </View>
           </Animated.View>
         )}
@@ -343,11 +347,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 40,
     width: "100%",
-    height: 80,
+    height: 100,
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1,
+    paddingVertical: 10,
     paddingHorizontal: 30,
   },
   headerText: {

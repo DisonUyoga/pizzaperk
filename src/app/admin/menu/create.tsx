@@ -301,6 +301,7 @@ const Create = () => {
           headerStyle: {
             backgroundColor: "#161622",
           },
+          headerShown: true,
           headerTintColor: "#fff",
           headerTitleStyle: {
             color: "#ffff",

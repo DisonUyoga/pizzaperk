@@ -1,34 +1,33 @@
+import { useColorScheme } from "@/src/components/useColorScheme";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { StripeProvider } from "@stripe/stripe-react-native";
 import { useFonts } from "expo-font";
 import { Redirect, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
-import { store } from "./features/store";
-import { Provider } from "react-redux";
-import { useColorScheme } from "@/src/components/useColorScheme";
-import { LogBox, View, Text } from "react-native";
 import { RootSiblingParent } from "react-native-root-siblings";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import { Provider } from "react-redux";
+import NotificationProvider from "../components/NotificationProvider";
+import QueryProvider from "../lib/QueryProvider";
 import { supabase } from "../lib/supabase";
-import { useAppDispatch } from "../utils/hooks";
+import { asyncStorageData } from "../utils/getAsyncStorageData";
 import {
   processingAuth,
   sessionToken,
   setAdmin,
   setUser,
 } from "./features/slices/AuthSlice";
-import QueryProvider from "../lib/QueryProvider";
-import { StatusBar } from "expo-status-bar";
-import { StripeProvider } from "@stripe/stripe-react-native";
-import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
-import NotificationProvider from "../components/NotificationProvider";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { asyncStorageData } from "../utils/getAsyncStorageData";
+import { store } from "./features/store";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -101,13 +100,7 @@ const toastConfig = {
       }}
     />
   ),
-  /*
-    Or create a completely new type - `tomatoToast`,
-    building the layout from scratch.
 
-    I can consume any custom `props` I want.
-    They will be passed when calling the `show` method (see below)
-  */
   tomatoToast: ({ text1, props }: { text1: string; props: any }) => (
     <View style={{ height: 60, width: "100%", backgroundColor: "tomato" }}>
       <Text>{text1}</Text>

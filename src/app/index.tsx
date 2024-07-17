@@ -1,5 +1,5 @@
 import { Link, Redirect, Stack, router } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Pressable, Alert } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
@@ -46,11 +46,18 @@ const onboardingSteps = [
 
 export default function OnboardingScreen() {
   const [screenIndex, setScreenIndex] = useState(0);
-  const { user, authLoading, isAdmin } = useAppSelector((state) => state.auth);
-  const { data: productData, isLoading, error } = useGetProducts();
+  const { user, authLoading } = useAppSelector((state) => state.auth);
 
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoader(false);
+    }, 5000);
+  }, []);
   const data = onboardingSteps[screenIndex];
-  if (isLoading && authLoading) {
+
+  if (loader) {
     return <Loading />;
   }
 
@@ -88,7 +95,14 @@ export default function OnboardingScreen() {
 
   return (
     <SafeAreaView style={styles.page}>
-      <Stack.Screen options={{ headerShown: false }} />
+      <Stack.Screen
+        options={{
+          headerTitleStyle: {
+            color: "#161622",
+          },
+          headerShown: false,
+        }}
+      />
       <StatusBar style="light" />
 
       <View style={styles.stepIndicatorContainer}>

@@ -2,10 +2,19 @@ import { View, Text } from "react-native";
 import SkeletonPlaceholder from "expo-react-native-skeleton-placeholder";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Stack } from "expo-router";
 
 const ProductDetailSkeletonPlaceholder = () => {
   return (
     <View className="flex-1 items-center justify-center bg-white">
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          headerTitleStyle: {
+            color: "#161622",
+          },
+        }}
+      />
       <SkeletonPlaceholder>
         <SkeletonPlaceholder.Item
           alignItems="center"

@@ -1,4 +1,5 @@
 import { Tables } from "@/src/database.types";
+import { PizzaSize } from "@/src/type";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface CartItems {
@@ -8,14 +9,14 @@ export interface CartItems {
   price: number;
   quantity: number;
   totalPrice: number;
-  size: string;
+  size: PizzaSize;
 }
 
 export interface CartProps {
   cartItems: CartItems[];
   totalAmount: number;
   totalQuantity: number;
-  sizes: string;
+  sizes: PizzaSize;
 }
 export interface CartProductProps {
   product: Tables<"products">;
@@ -48,7 +49,7 @@ const cartSlice = createSlice({
           price: product.price,
           quantity: 1,
           totalPrice: product.price,
-          size: size,
+          size: size as PizzaSize,
         });
       } else {
         item.quantity++;
@@ -97,7 +98,7 @@ const cartSlice = createSlice({
     },
     selectSize(
       state: CartProps,
-      action: PayloadAction<{ size: string; product: Tables<"products"> }>
+      action: PayloadAction<{ size: PizzaSize; product: Tables<"products"> }>
     ) {
       const { size, product } = action.payload;
       state.sizes = size;
@@ -106,7 +107,7 @@ const cartSlice = createSlice({
         (item) => item.id === product.id
       );
       if (existingItem) {
-        existingItem.size = size;
+        existingItem.size = size as PizzaSize;
       }
     },
     clearCart(state) {
